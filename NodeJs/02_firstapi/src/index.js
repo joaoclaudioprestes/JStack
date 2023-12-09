@@ -16,18 +16,20 @@ const server = http.createServer((request, response) => {
   const splitEndpoint = pathname
     .split("/")
     .filter((routeItem) => Boolean(routeItem));
-    console.log(splitEndpoint);
+  console.log(splitEndpoint);
 
   const route = routes.find((routeObject) => {
-    routeObject.endpoint === pathname && routeObject.method === request.method;
-  }); // find preocura um elemento dentro do array
+    return (
+      routeObject.endpoint === pathname && routeObject.method === request.method
+    );
+  }); // find procura um elemento dentro do array
 
   if (route) {
     request.query = Object.fromEntries(parsedUrl.searchParams);
     route.handler(request, response);
   } else {
     response.writeHead(404, { "Content-Type": "text/html" });
-    response.end(`cannot ${response.method} ${parsedUrl.pathname}`);
+    response.end(`Cannot ${request.method} ${parsedUrl.pathname}`);
   }
 });
 
