@@ -1,3 +1,4 @@
+// Mocks são dados fakes
 module.exports = [
     {
         id:"1",
