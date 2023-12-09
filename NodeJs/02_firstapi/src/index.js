@@ -1,25 +1,34 @@
 const http = require("http");
 const routes = require("./routes");
+const { URL } = require("url");
+const path = require("path");
 
 const server = http.createServer((request, response) => {
+  const parsedUrl = new URL(`http://localhost:3000${request.url}`);
+
   // Criamos o servidor
-  console.log(`Request method: ${request.method} | Endpoint: ${request.url}`);
+  console.log(
+    `Request method: ${request.method} | Endpoint: ${parsedUrl.pathname}`
+  );
 
-    const route = routes.find((routeObject) => {
-        routeObject.endpoint === request.url && routeObject.method === request.method
-    });// find preocura um elemento dentro do array
+  let { pathname } = parsedUrl;
 
-    if (route) {
-        route.handler(request, response);
-    }
+  const splitEndpoint = pathname
+    .split("/")
+    .filter((routeItem) => Boolean(routeItem));
+    console.log(splitEndpoint);
 
+  const route = routes.find((routeObject) => {
+    routeObject.endpoint === pathname && routeObject.method === request.method;
+  }); // find preocura um elemento dentro do array
 
-//   if (request.url === "/users" && request.method === "GET") {
-//     UserController.listUsers(request, response);
-//   } else {
-//     response.writeHead(404, { "content-Type": "application/json" }); // Código de ok
-//     response.end(`cannot ${response.method} ${response.url}`);
-//   }
+  if (route) {
+    request.query = Object.fromEntries(parsedUrl.searchParams);
+    route.handler(request, response);
+  } else {
+    response.writeHead(404, { "Content-Type": "text/html" });
+    response.end(`cannot ${response.method} ${parsedUrl.pathname}`);
+  }
 });
 
 server.listen(3000, () =>
