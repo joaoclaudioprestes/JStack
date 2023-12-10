@@ -1,6 +1,0 @@
-Módulos: são conjuntos de códigos 
-
-3 - tipos de módulos:
--> TODOS OS ARQUIVOS SÃO MÓDULOS;
--> Nativos;
--> npm (Node Package Manager);
