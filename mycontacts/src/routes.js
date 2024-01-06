@@ -3,6 +3,7 @@ const ContactController = require("./app/controllers/ContactController");
 
 const router = Router();
 
+router.get("/", ContactController.home);
 router.get("/contacts", ContactController.index);
 router.get("/contacts/:id", ContactController.show); // No express podemos passar quantos parametros quisermos
 router.delete("/contacts/:id", ContactController.delete);

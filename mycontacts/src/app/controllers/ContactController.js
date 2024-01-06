@@ -1,6 +1,11 @@
 const ContactRepository = require("../repositorios/ContactsRepository");
 
 class ContactController {
+
+  home(req, res) {
+    res.status(200).end("<h1>Hello Word!</h1>")
+  }
+  
   async index(request, response) {
     // Listar todos os registros
     const contacts = await ContactRepository.findAll();
